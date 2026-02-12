@@ -1,0 +1,8 @@
+To-Do List Application
+
+create a web app using django
+build a data model with one to many relationships
+use the django admin interface to explore your data model and add test data
+design templates for displaying your lists
+Leverage class-based views to handle the standard database operations
+control the django URL dispatcher by creating URL configurations

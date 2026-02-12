@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do Lists</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px 30px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* Add List Form (the first form in the container) */
+        .container > form:first-of-type {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        .container > form:first-of-type p { /* Accommodate for form.as_p */
+            flex-grow: 1;
+            margin: 0;
+        }
+        .container > form:first-of-type label { /* Hide label from form.as_p */
+            display: none;
+        }
+        .container > form:first-of-type input[type="text"] {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border-radius: 4px;
+            border: 1px solid #333;
+            background-color: #252525;
+            color: #e0e0e0;
+            font-size: 16px;
+        }
+        
+        /* General Button Styles */
+        button[type="submit"] {
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.2s ease-in-out;
+        }
+        button[type="submit"]:hover {
+            opacity: 0.9;
+        }
+
+        /* Add Button Specifics */
+        .container > form:first-of-type button[type="submit"] {
+            background-color: #0d6efd; /* A nice blue */
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            background-color: #252525;
+            margin-bottom: 10px;
+            padding: 15px 20px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        li:hover {
+            background-color: #333333;
+        }
+        li a {
+            color: #bb86fc; /* A nice purple */
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 18px;
+        }
+        li a:hover {
+            text-decoration: underline;
+        }
+
+        /* Delete Form & Button */
+        li form {
+            margin: 0;
+        }
+        li form button[type="submit"] {
+            background-color: #dc3545; /* A danger red */
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+        .lists-preview {
+            margin-top: 30px;
+        }
+        .list-preview {
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .list-header h3 {
+            margin: 0;
+            color: #ffffff;
+        }
+        .due-date {
+            color: #bb86fc;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .add-item-form {
+            margin-bottom: 20px;
+        }
+        .add-item-form p {
+            margin: 0 0 10px 0;
+        }
+        .add-item-form label {
+            display: block;
+            margin-bottom: 5px;
+            color: #e0e0e0;
+            font-size: 14px;
+        }
+        .add-item-form input[type="text"],
+        .add-item-form input[type="datetime-local"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #333;
+            background-color: #252525;
+            color: #e0e0e0;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .add-item-form input[type="text"]:focus,
+        .add-item-form input[type="datetime-local"]:focus {
+            outline: none;
+            border-color: #bb86fc;
+        }
+        .add-item-form button[type="submit"] {
+            background-color: #0d6efd;
+            margin-top: 10px;
+        }
+        .items-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .items-list li {
+            background-color: #252525;
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        .items-list li:hover {
+            background-color: #333333;
+        }
+        .items-list li.completed .item-text {
+            text-decoration: line-through;
+            color: #888;
+        }
+        .checkbox-form {
+            margin-right: 10px;
+        }
+        .checkbox-form input[type="checkbox"] {
+            transform: scale(1.2);
+        }
+        .delete-item-form button[type="submit"] {
+            background-color: #dc3545;
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+        .delete-list-form button[type="submit"] {
+            background-color: #dc3545;
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>To-Do Lists</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Add List</button>
+        </form>
+        <div class="lists-preview">
+            {% for list_obj, item_form in lists_with_forms %}
+            <div class="list-preview">
+                <div class="list-header">
+                    <h3>{{ list_obj.name }}</h3>
+                    {% if list_obj.due_date %}
+                    <div class="due-date">Due: {{ list_obj.due_date|date:"M d, Y H:i" }}</div>
+                    {% endif %}
+                    <form method="post" action="{% url 'list_delete' list_obj.pk %}" class="delete-list-form">
+                        {% csrf_token %}
+                        <button type="submit">Delete List</button>
+                    </form>
+                </div>
+                <form method="post" action="{% url 'add_item' list_obj.pk %}" class="add-item-form">
+                    {% csrf_token %}
+                    {{ item_form.as_p }}
+                    <button type="submit">Add Task</button>
+                </form>
+                <ul class="items-list">
+                    {% for item in list_obj.item_set.all %}
+                    <li{% if item.completed %} class="completed"{% endif %}>
+                        <form method="post" action="{% url 'item_toggle' item.pk %}" class="checkbox-form">
+                            {% csrf_token %}
+                            <input type="checkbox" {% if item.completed %}checked{% endif %} onchange="this.form.submit()">
+                        </form>
+                        <span class="item-text">{{ item.text }} {% if item.due_date %} - Due: {{ item.due_date|date:"M d, Y H:i" }}{% endif %}</span>
+                        <form method="post" action="{% url 'item_delete' item.pk %}" class="delete-item-form">
+                            {% csrf_token %}
+                            <button type="submit">Delete</button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
